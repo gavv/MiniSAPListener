@@ -20,11 +20,50 @@
 
 int main(int argc, char **argv)
 {
-    sdp_info **history = NULL;
-    int history_size = 0;
-
+    char *command = NULL;
+    char *maddr = "224.2.127.254";
     int port = 9875;
-    char *command = argc > 1 ? argv[1] : NULL;
+    int verbose = 0;
+
+    int c;
+    while ((c = getopt (argc, argv, "vhc:a:p:")) != -1) {
+        switch (c) {
+        case 'c':
+            command = optarg;
+            break;
+        case 'a':
+            maddr = optarg;
+            break;
+        case 'p':
+            port = atoi(optarg);
+            if (port == 0) {
+                fprintf(stderr, "invalid port %s\n", optarg);
+                return 1;
+            }
+            break;
+        case 'v':
+            verbose = 1;
+            break;
+        case 'h':
+            fprintf(stderr, "usage: %s [-v] [-a ADDRESS] [-p PORT] [-c COMMAND]\n", argv[0]);
+            fprintf(stderr, "\n");
+            fprintf(stderr, "OPTIONS:\n");
+            fprintf(stderr, "  -a ADDRESS  multicast address to listen\n");
+            fprintf(stderr, "  -p PORT     UDP port to listen\n");
+            fprintf(stderr, "  -c COMMAND  shell command to invoke\n");
+            fprintf(stderr, "  -v          verbose mode\n");
+            return 1;
+        case '?':
+            if (optopt == 'c' || optopt == 'a' || optopt == 'p') {
+                fprintf(stderr, "option -%c requires an argument\n", optopt);
+            } else {
+                fprintf(stderr, "unknown option -%c\n", optopt);
+            }
+            return 1;
+        default:
+            abort();
+        }
+    }
 
     int sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (sock == -1) {
@@ -42,11 +81,24 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    struct ip_mreq mreq = {};
+    if (!inet_aton(maddr, &mreq.imr_multiaddr)) {
+        fprintf(stderr, "failed to parse address: %s\n", maddr);
+        return 1;
+    }
+    if (setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&mreq, sizeof(mreq)) == -1) {
+        perror("setsockopt(IP_ADD_MEMBERSHIP)");
+        return 1;
+    }
+
     sap_context sap;
     if (!sap_init(&sap, sock)) {
         fprintf(stderr, "sap_init failed\n");
         return 1;
     }
+
+    sdp_info **history = NULL;
+    int history_size = 0;
 
     for (;;) {
         fd_set fds;
@@ -71,21 +123,23 @@ int main(int argc, char **argv)
             continue;
         }
 
-        printf("origin=%s session=%s conn=%s host=%s port=%d goodbye=%d",
-               sdp->origin,
-               sdp->session,
-               sdp->conn,
-               sdp->host,
-               sdp->port,
-               sdp->goodbye);
+        if (verbose) {
+            printf("origin=%s session=%s conn=%s host=%s port=%d goodbye=%d",
+                   sdp->origin,
+                   sdp->session,
+                   sdp->conn,
+                   sdp->host,
+                   sdp->port,
+                   sdp->goodbye);
 
-        if (sdp->payload_type != -1)
-            printf(" pt=%d", sdp->payload_type);
+            if (sdp->payload_type != -1)
+                printf(" pt=%d", sdp->payload_type);
 
-        if (sdp->encoding)
-            printf(" encoding=%s", sdp->encoding);
+            if (sdp->encoding)
+                printf(" encoding=%s", sdp->encoding);
 
-        printf("\n");
+            printf("\n");
+        }
 
         bool skip = false;
         for (size_t n = 0; n < history_size; n++) {

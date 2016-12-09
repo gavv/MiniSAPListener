@@ -10,8 +10,12 @@ Build:
 
 Listen announcements and print them to stdout:
 
-    $ ./saplisten
+    $ ./saplisten -v
 
 Invoke shell command for every new or updated announcement:
 
-    $ ./saplisten ./test_command.sh
+    $ ./saplisten -c ./test_command.sh
+
+Custom address and port:
+
+    $ ./saplisten -v -a 224.2.127.254 -p 9875
