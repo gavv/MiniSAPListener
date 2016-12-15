@@ -194,6 +194,7 @@ int main(int argc, char **argv)
                     }
                     history[n] = sdp;
                     added = true;
+                    break;
                 }
 
                 if (!added) {
