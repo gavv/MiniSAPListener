@@ -128,7 +128,7 @@ sdp_info *sdp_parse(const char *t, int is_goodbye) {
             char a[64];
             strlcpy(a, t+2, l-1);
 
-            a[strcspn(a, " ")] = 0;
+            //a[strcspn(a, " ")] = 0;
             i->session = strdup(a);
         } else if (startswith(t, "c=IN IP4 ")) {
             char a[64];
