@@ -171,7 +171,7 @@ int main(int argc, char **argv)
         if (command) {
             char cmd[1024] = {};
             int ret = snprintf(
-                cmd, sizeof(cmd), "%s %s %s %s %s %d %d %d %s",
+                cmd, sizeof(cmd), "%s \"%s\" \"%s\" \"%s\" \"%s\" %d %d %d \"%s\"",
                 command,
                 sdp->origin,
                 sdp->session,
