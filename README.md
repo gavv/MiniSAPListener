@@ -2,7 +2,7 @@
 
 MiniSAPListener is a small program that listens to SAP/SDP announcements and invokes a shell command for created, removed, or modified sessions. It can be used with [MiniSAPServer](https://wiki.videolan.org/MiniSAPServer/).
 
-See usage example in [this blog post](https://gavv.github.io/blog/minisaplistener/).
+See usage example in [this article](https://gavv.github.io/articles/minisaplistener/).
 
 The implementation is based on the [PulseAudio](https://www.freedesktop.org/wiki/Software/PulseAudio/) RTP module.
 
