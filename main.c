@@ -52,7 +52,7 @@ int main(int argc, char **argv)
             fprintf(stderr, "  -p PORT     UDP port to listen\n");
             fprintf(stderr, "  -c COMMAND  shell command to invoke\n");
             fprintf(stderr, "  -v          verbose mode\n");
-            return 1;
+            return 0;
         case '?':
             if (optopt == 'c' || optopt == 'a' || optopt == 'p') {
                 fprintf(stderr, "option -%c requires an argument\n", optopt);
