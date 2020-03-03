@@ -1,5 +1,7 @@
 # MiniSAPListener
 
+[![Build Status](https://travis-ci.org/gavv/MiniSAPListener.svg?branch=master)](https://travis-ci.org/gavv/MiniSAPListener)
+
 MiniSAPListener is a small program that listens to SAP/SDP announcements and invokes a shell command for created, removed, or modified sessions. It can be used with [MiniSAPServer](https://wiki.videolan.org/MiniSAPServer/).
 
 See usage example in [this article](https://gavv.github.io/articles/minisaplistener/).

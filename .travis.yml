@@ -1,0 +1,7 @@
+language: cpp
+compiler: gcc
+dist: bionic
+
+script:
+  - make
+  - ./saplisten -h
