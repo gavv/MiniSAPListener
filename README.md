@@ -12,6 +12,10 @@ Build:
 
     $ make
 
+Install system-wide:
+
+    $ make install
+
 Listen to announcements and print them to stdout:
 
     $ ./saplisten -v
