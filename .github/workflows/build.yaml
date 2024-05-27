@@ -1,12 +1,22 @@
 name: build
-on: [pull_request, push]
+
+on:
+  pull_request:
+
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+
+  workflow_dispatch:
 
 jobs:
   ubuntu:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Build
         run: make
