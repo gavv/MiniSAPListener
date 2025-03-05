@@ -30,7 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static char *strlcpy(char *b, const char *s, size_t l) {
+static char *xstrlcpy(char *b, const char *s, size_t l) {
     size_t k;
 
     assert(b);
@@ -100,7 +100,7 @@ sdp_info *sdp_parse(const char *t, int is_goodbye) {
 
         if (startswith(t, "o=")) {
             char a[64];
-            strlcpy(a, t+2, l-1);
+            xstrlcpy(a, t+2, l-1);
 
             size_t s = strcspn(a, " ");
 
@@ -109,13 +109,13 @@ sdp_info *sdp_parse(const char *t, int is_goodbye) {
 
                 if ((h = strstr(a, "IN IP4 "))) {
                     char ha[64];
-                    strlcpy(ha, h+7, 64);
+                    xstrlcpy(ha, h+7, 64);
                     ha[strcspn(ha, "/")] = 0;
 
                     i->host = strdup(ha);
                 } else if ((h = strstr(a, "IN IP6 "))) {
                     char ha[64];
-                    strlcpy(ha, h+7, 64);
+                    xstrlcpy(ha, h+7, 64);
                     ha[strcspn(ha, "/")] = 0;
 
                     i->host = strdup(ha);
@@ -126,7 +126,7 @@ sdp_info *sdp_parse(const char *t, int is_goodbye) {
             i->origin = strndup(a, s);
         } else if (startswith(t, "s=")) {
             char a[64];
-            strlcpy(a, t+2, l-1);
+            xstrlcpy(a, t+2, l-1);
 
             i->session = strdup(a);
         } else if (startswith(t, "c=IN IP4 ")) {
@@ -135,7 +135,7 @@ sdp_info *sdp_parse(const char *t, int is_goodbye) {
 
             k = l-8 > sizeof(a) ? sizeof(a) : l-8;
 
-            strlcpy(a, t+9, k);
+            xstrlcpy(a, t+9, k);
             a[strcspn(a, "/")] = 0;
 
             i->conn = strdup(a);
@@ -145,7 +145,7 @@ sdp_info *sdp_parse(const char *t, int is_goodbye) {
 
             k = l-8 > sizeof(a) ? sizeof(a) : l-8;
 
-            strlcpy(a, t+9, k);
+            xstrlcpy(a, t+9, k);
             a[strcspn(a, "/")] = 0;
 
             i->conn = strdup(a);
