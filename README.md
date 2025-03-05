@@ -10,20 +10,20 @@ The implementation is based on the [PulseAudio](https://www.freedesktop.org/wiki
 
 Build:
 
-    $ make
+    make
 
 Install system-wide:
 
-    $ make install
+    make install
 
 Listen to announcements and print them to stdout:
 
-    $ ./saplisten -v
+    ./saplisten -v
 
 Invoke a shell command for every created, modified, or removed session:
 
-    $ ./saplisten -c ./test_command.sh
+    ./saplisten -c ./test_command.sh
 
 Use custom address and port:
 
-    $ ./saplisten -v -a 224.2.127.254 -p 9875
+    ./saplisten -v -a 224.2.127.254 -p 9875
