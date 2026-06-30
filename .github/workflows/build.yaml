@@ -11,12 +11,15 @@ on:
 
   workflow_dispatch:
 
+  schedule:
+    - cron: '0 0 * * 1'
+
 jobs:
   ubuntu:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Build
         run: make
